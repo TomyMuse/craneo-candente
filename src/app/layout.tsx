@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Craneo Candente | Estudio y Salas",
+  title: "craneo-candente",
   description: "Prototipo de reservas online para Craneo Candente",
 };
 
