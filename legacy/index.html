@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Cráneo Candente | Estudio de Grabación & Salas de Ensayo</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Permanent+Marker&family=Special+Elite&family=Cutive+Mono&family=Frijole&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-[#0a0a0a] text-white overflow-x-hidden cursor-crosshair;
+                font-family: 'Montserrat', sans-serif;
+            }
+        }
+        @layer components {
+            .grunge-stencil {
+                font-family: 'Special Elite', monospace;
+            }
+            .grunge-handwritten {
+                font-family: 'Permanent Marker', cursive;
+            }
+            .typewriter {
+                font-family: 'Cutive Mono', monospace;
+            }
+            .glitch-text {
+                font-family: 'Montserrat', sans-serif;
+                text-shadow: 2px 0 #ee2b2b, -2px 0 #00fff9;
+            }
+            .duct-tape {
+                @apply relative;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+                background-color: #333;
+                background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.05) 5px, rgba(255,255,255,0.05) 10px);
+            }
+            .tape-edge-red {
+                clip-path: polygon(2% 0%, 98% 2%, 100% 15%, 98% 85%, 100% 100%, 0% 98%, 2% 50%, 0% 0%);
+                background: #ee2b2b;
+            }
+            .tape-gray {
+                background-color: #444;
+                background-image: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);
+                clip-path: polygon(1% 2%, 99% 0%, 100% 100%, 0% 98%);
+            }
+            .gritty-overlay {
+                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+                opacity: 0.12;
+            }
+            .concrete-bg {
+                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.15' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+                opacity: 0.05;
+            }
+            .staple {
+                width: 20px;
+                height: 4px;
+                background: #555;
+                position: absolute;
+                box-shadow: 1px 1px 0px rgba(0,0,0,0.5);
+            }
+            .red-leak {
+                background: radial-gradient(circle, rgba(238,43,43,0.3) 0%, transparent 70%);
+                filter: blur(40px);
+            }
+            .brick-wall {
+                background-color: #0f0f0f;
+                background-image: 
+                    linear-gradient(335deg, #161616 5px, transparent 5px),
+                    linear-gradient(155deg, #161616 5px, transparent 5px),
+                    linear-gradient(335deg, #161616 5px, transparent 5px),
+                    linear-gradient(155deg, #161616 5px, transparent 5px);
+                background-size: 20px 20px;
+                background-position: 0 0, 10px 10px, 10px 10px, 0 0;
+            }
+            @keyframes fire {
+                0%, 100% {
+                    box-shadow: 0 0 10px #ff6b00, 0 0 20px #ff6b00, 0 0 30px #ee2b2b, 0 0 40px #ee2b2b;
+                }
+                50% {
+                    box-shadow: 0 0 20px #ff6b00, 0 0 30px #ff6b00, 0 0 40px #ee2b2b, 0 0 50px #ee2b2b, 0 0 60px #ff6b00;
+                }
+            }
+            .fire-hover:hover {
+                animation: fire 0.3s ease-in-out infinite;
+                background: linear-gradient(180deg, #ee2b2b 0%, #ff6b00 100%) !important;
+                color: white !important;
+            }
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ee2b2b",
+                        "accent": "#ff6b00",
+                        "background-dark": "#0a0a0a",
+                        "card-dark": "#151515",
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="selection:bg-primary selection:text-white">
+    <div class="fixed inset-0 gritty-overlay pointer-events-none z-[100]"></div>
+    <div class="fixed inset-0 concrete-bg pointer-events-none z-[99]"></div>
+    <nav class="fixed top-0 w-full z-[110] px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="relative group">
+                    <div class="w-20 h-20 flex items-center justify-center relative z-10 overflow-hidden">
+                        <img src="logo.png" alt="Cráneo Candente" class="w-full h-full object-contain" />
+                        <div class="staple top-0 left-1/2 -translate-x-1/2 -translate-y-1"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="grunge-handwritten text-2xl leading-none text-white tracking-widest">CRÁNEO</span>
+                    <span class="grunge-stencil text-sm text-primary leading-none font-bold">CANDENTE</span>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center gap-6 grunge-stencil text-sm uppercase tracking-tighter">
+                <a class="fire-hover bg-white/5 px-3 py-1 transition-all transform rotate-2 rounded-full"
+                    href="#">Inicio</a>
+                <a class="fire-hover bg-white/5 px-3 py-1 transition-all transform -rotate-1 rounded-full"
+                    href="#salas">Salas</a>
+                <a class="fire-hover bg-white/5 px-3 py-1 transition-all transform rotate-3 rounded-full"
+                    href="#gear">Equipamiento</a>
+                <a class="fire-hover bg-white/5 px-3 py-1 transition-all transform -rotate-2 rounded-full"
+                    href="#contacto">Contacto</a>
+            </div>
+        </div>
+    </nav>
+    <section class="relative min-h-[80vh] flex items-center pt-20 pb-16 overflow-hidden bg-black">
+        <div class="absolute inset-0 z-0">
+            <img alt="Amplificador de válvulas"
+                class="w-full h-full object-cover opacity-60 grayscale brightness-50 contrast-150 scale-125"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7v5LBN6OHhNX4wkOeb75mP04_rW8WZwIXTp0_tQoO1MyArKcnRMDLoXM3dj-251LaXy61AtpSD2arch_KKfOlQsbgAUFQjpYIn4B69dkaK4OLYLtnEdGMZ02UM2D1sWgd9jrMTzM_on_2I_Glr21Y06V7WDqyNJFkUai7T0iMz3CukjwHrxq3tJ8DZ2Bo4HeiAMb7_G7FtJBtRoyDu7lz5fd3YXJpmCaWRXARIUFuHv3A8KQbVBwG6lr_HXlzbKJrH4gHPyuddjQ" />
+            <div class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
+            <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] red-leak opacity-40"></div>
+        </div>
+        <div class="relative z-20 max-w-7xl mx-auto px-6 w-full">
+            <div class="max-w-4xl">
+                <div class="mb-6 flex items-center gap-4">
+                    <div class="h-1 w-20 bg-primary"></div>
+                    <span class="grunge-stencil text-xl text-primary font-bold tracking-widest uppercase">Buenos Aires •
+                        Caseros</span>
+                </div>
+                <h1
+                    class="text-3xl md:text-[4.5rem] font-black uppercase leading-[0.8] mb-12 glitch-text tracking-tighter">
+                    ESTUDIO DE<br />
+                    <span class="relative">
+                        GRABACIÓN
+                        <div class="absolute -left-4 -top-2 -right-4 h-1/2 bg-white/5 -z-10 transform -rotate-1"></div>
+                    </span>
+                    <br />
+                    <span class="text-primary">&</span> SALAS DE<br />
+                    <span class="relative">
+                        ENSAYO
+                        <div
+                            class="absolute -right-12 top-0 w-32 h-32 bg-primary rounded-full blur-3xl opacity-40 -z-10">
+                        </div>
+                    </span>
+                </h1>
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="relative group">
+                        <div class="absolute -inset-2 bg-zinc-800 transform rotate-1 opacity-50"></div>
+                        <div class="relative tape-gray p-6 max-w-md">
+                            <p class="grunge-stencil text-zinc-100 text-lg md:text-xl leading-relaxed">
+                                Sonido profesional y crudo. Grabación multipista y las mejores salas
+                                de Caseros para sonar como necesitás.
+                            </p>
+                            <div class="flex flex-col gap-6">
+                                <a class="relative inline-block group" href="booking.html">
+                                    <div
+                                        class="tape-edge-red px-10 py-6 text-white font-black text-3xl uppercase tracking-tighter transform hover:scale-105 transition-transform">
+                                        RESERVAR AHORA
+                                    </div>
+                                    <div class="absolute -top-2 -left-2 w-8 h-8 opacity-60">
+                                        <div class="staple rotate-45 scale-125"></div>
+                                    </div>
+                                </a>
+                                <div class="flex gap-2">
+                                    <div class="h-[2px] w-full bg-zinc-800 self-center"></div>
+                                    <span
+                                        class="grunge-handwritten text-zinc-500 whitespace-nowrap text-sm italic transform rotate-2">no
+                                        te duermas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 w-full h-12 duct-tape z-30 transform -rotate-1 origin-left translate-y-4">
+                </div>
+    </section>
+    <section class="py-20 brick-wall relative" id="salas">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="relative mb-16 inline-block">
+                <h2 class="text-4xl md:text-7xl font-black uppercase tracking-tighter relative z-10">
+                    LAS <span class="text-primary">SALAS</span>
+                </h2>
+                <div class="absolute -bottom-4 left-0 w-full h-8 bg-white/10 -rotate-1 -z-10"></div>
+                <div class="absolute -top-4 -right-4 flex gap-1">
+                    <div class="staple rotate-12"></div>
+                    <div class="staple -rotate-45 translate-x-4"></div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div
+                    class="relative group bg-[#111] p-2 border-2 border-zinc-800 shadow-2xl transform rotate-1 hover:rotate-0 transition-all duration-500">
+                    <div
+                        class="aspect-[3/4] overflow-hidden relative grayscale contrast-150 brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all">
+                        <img alt="Sala A" class="w-full h-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwACDngs9fSMjn2zOmOxYjVzq4Ed1k_eNlT_EejtQe_V3RuK4z6pga2S1n1nzEkBBM7N71Ol-FhdybWDWIjzZ5Fp3k2e55lSRMPKyOnY0v1gB0RWiVjPf3Dg6YBUvm20df6d3r-YZp0fyAJXzOdhqcGGmRLYnVUsyeMWdOvymIis8olbyXI1nuWzP4m1tRWJBOUMjg1_y3Nsz_LxotRs0Il-eI6WmSFbm9I4g--J8hJsQ4LLgyjWq2DxKyiXy1GNXvHfcv-Ryxe9Y" />
+                        <div class="absolute inset-0 red-leak mix-blend-color-dodge opacity-30"></div>
+                    </div>
+                    <div class="p-4 bg-white text-black mt-2 relative">
+                        <h3 class="font-black text-3xl uppercase leading-none mb-4">SALA 1</h3>
+                        <div class="typewriter text-sm space-y-1">
+                            <p>• Marshall DSL100H</p>
+                            <p>• Ampeg SVT-CL</p>
+                            <p>• Pearl Masters</p>
+                        </div>
+                        <div
+                            class="absolute -top-8 right-2 bg-primary text-white grunge-handwritten px-3 py-1 text-sm -rotate-6 border border-black shadow-lg">
+                            THE BEAST</div>
+                    </div>
+                    <div
+                        class="absolute top-2 left-1/2 -translate-x-1/2 w-16 h-4 bg-zinc-700/80 -rotate-1 border-x border-zinc-500 opacity-60">
+                    </div>
+                </div>
+                <div
+                    class="relative group bg-[#111] p-2 border-2 border-zinc-800 shadow-2xl transform -rotate-2 hover:rotate-0 transition-all duration-500">
+                    <div
+                        class="aspect-[3/4] overflow-hidden relative grayscale contrast-150 brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all">
+                        <img alt="Sala B" class="w-full h-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW45R0zD8rXL3PnhtwEcvGN2NUclNT1mwLn571Uy2gaIyfZqADrQ8Oo4srCRtOL1Msx0nRJfymWPJAbTF1Lp_nVfN-IMGeg0LX29vh1TLSvIx1lXa6rz0Mojl_rjOKvfsAysPpkg2cgNFCIacw_TfZdXcUF9bunU5XDdZP3MPmc39EPCJ9Acbcff5_mIpZ6UU4heoMoqYQ2VJLRfJKHqmi9UahSrw0AXD0FNH3AkAbFF715XTxLjzaTW4jnJ56OscsR7lstUeQRvQ" />
+                    </div>
+                    <div class="p-4 bg-zinc-200 text-black mt-2 relative">
+                        <h3 class="font-black text-3xl uppercase leading-none mb-4">SALA 2</h3>
+                        <div class="typewriter text-sm space-y-1">
+                            <p>• Vox AC30 C2</p>
+                            <p>• Fender Bassman</p>
+                            <p>• Gretsch Renown</p>
+                        </div>
+                        <div
+                            class="absolute -top-8 right-2 bg-black text-white grunge-handwritten px-3 py-1 text-sm rotate-3 border border-white shadow-lg">
+                            VINTAGE</div>
+                    </div>
+                    <div class="absolute top-2 left-4 w-12 h-3 bg-zinc-600/50 rotate-45 opacity-60"></div>
+                </div>
+                <div
+                    class="relative group bg-[#111] p-2 border-2 border-zinc-800 shadow-2xl transform rotate-2 hover:rotate-0 transition-all duration-500">
+                    <div
+                        class="aspect-[3/4] overflow-hidden relative grayscale contrast-150 brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all">
+                        <img alt="Sala C" class="w-full h-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCITpNt1lDZ80rZGKnDWJugmhfr55xrCov3bgAFF_BWZ5YiiRhUdBVLh0O1HimaGTyR0jjNICIdRAUiGcGEEEYopwdXoDre_Rad4lc5qhRWxT69GlSJfyvqSAkG7R7IxU6VsCna6PZRL1Ac0lY53AoUITa9cWjZ1ZHnlrvCHGJkYnL8o9PGNuLdzQoDXTHrGnGhhphwliGcJ9o05wLtXdUSK659-wV55mNuDd1uMiQpY8Chr9nPx7j9502PCv5l35ss8Veh6w6GBsc" />
+                        <div class="absolute inset-0 red-leak mix-blend-color-dodge opacity-30"></div>
+                    </div>
+                    <div class="p-4 bg-white text-black mt-2 relative">
+                        <h3 class="font-black text-3xl uppercase leading-none mb-4">SALA 3</h3>
+                        <div class="typewriter text-sm space-y-1">
+                            <p>• EVH 5150 III</p>
+                            <p>• Orange Rocker</p>
+                            <p>• Tama Starclassic</p>
+                        </div>
+                        <div
+                            class="absolute -top-8 right-2 bg-primary text-white grunge-handwritten px-3 py-1 text-sm -rotate-12 border border-black shadow-lg">
+                            HI-GAIN</div>
+                    </div>
+                    <div
+                        class="absolute bottom-2 right-4 w-10 h-10 border-4 border-black/10 rounded-full flex items-center justify-center font-bold opacity-20">
+                        C</div>
+                </div>
+                <div
+                    class="relative group bg-[#111] p-2 border-2 border-zinc-800 shadow-2xl transform -rotate-1 hover:rotate-0 transition-all duration-500">
+                    <div
+                        class="aspect-[3/4] overflow-hidden relative grayscale contrast-150 brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all">
+                        <img alt="Sala D" class="w-full h-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBt9UE4-bTghJpQFrw43mYi5h4lHpbZrLr_F8ySdaNOOpEwDs6UpTSh1UKvC-UnGfVUIhklh0fIWqGjh3xYe-fblYpJFHoQ3aQbR_E6cuC1EGQtyg35hOp3d-EZ3e4wVt10tEG60T3rvDxE2J5Pfc4DtrNk3p7SLpZTF1lRoikLKas26BywGUdzuWMJBY8Lsl-EhY9gQvyxs2sBfgWhyXwUmYsxUqAP85i58VfDVkQB44DukAGANPOBj1iWLYMPTfm9DZgOPtKcl4A" />
+                    </div>
+                    <div class="p-4 bg-zinc-900 text-zinc-300 mt-2 relative border border-zinc-700">
+                        <h3 class="font-black text-3xl text-white uppercase leading-none mb-4">SALA 4</h3>
+                        <div class="typewriter text-sm space-y-1">
+                            <p>• Roland JC-120</p>
+                            <p>• Hartke HD500</p>
+                            <p>• Yamaha Stage</p>
+                        </div>
+                        <div class="absolute top-2 right-2 flex gap-1">
+                            <div class="staple"></div>
+                        </div>
+                    </div>
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-primary/20 blur-2xl -z-10"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-20 bg-[#050505] overflow-hidden" id="gear">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="mb-16 text-center relative">
+                <h2
+                    class="text-6xl md:text-[8rem] font-black uppercase tracking-tighter leading-none inline-block relative">
+                    SOLO EL <span class="text-white">MEJOR</span> EQUIPO
+                    <div
+                        class="absolute -top-10 left-1/2 -translate-x-1/2 w-full grunge-handwritten text-primary text-4xl opacity-80 -rotate-2">
+                        VÁLVULAS CALIENTES</div>
+                </h2>
+            
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                <div class="md:col-span-7 relative group">
+                    <div class="duct-tape p-1 transform rotate-1">
+                        <img alt="Batería"
+                            class="w-full h-[500px] object-cover grayscale contrast-150 group-hover:contrast-100 transition-all"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBC0mg-d1vXkY4rTKND9BfxxpCtbmHhWssBVjDoQCmBdE6CxSeNefYzH_uYbx_CL24J1gmjxQM_rfnJxJZFabZTJppEjQUfGpDVcy5myHyUS906_rmJ8tNB4crl6S14plG6ZCeFhqyOcwmw09ohSIyYD3kodwThmCMIbyD8BmKmhPD8PnFyN1GHziRViwcFiZwLnAPUkk5WBtnQi2DoGzZIWnKNGh4NACYyUMmDXihA-JQqoyTZQTpE-GfyUYCyRhGL6XFM9cnbLE" />
+                        <div
+                            class="absolute inset-0 bg-primary/20 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
+                    </div>
+                    <div
+                        class="absolute top-8 left-8 bg-black text-white p-4 border-2 border-white transform -rotate-3 z-10 shadow-2xl">
+                        <span class="grunge-stencil text-2xl font-bold italic">BATERÍAS DE CLASE MUNDIAL</span>
+                    </div>
+                    <div class="absolute -bottom-4 right-4 bg-primary px-6 py-2 grunge-handwritten text-2xl rotate-2">
+                        PEARL & TAMA</div>
+                </div>
+                <div class="md:col-span-5 flex flex-col gap-4">
+                    <div class="relative group flex-1">
+                        <div class="p-1 bg-zinc-800 transform -rotate-2">
+                            <img alt="Amplificadores" class="w-full h-[240px] object-cover grayscale brightness-125"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7v5LBN6OHhNX4wkOeb75mP04_rW8WZwIXTp0_tQoO1MyArKcnRMDLoXM3dj-251LaXy61AtpSD2arch_KKfOlQsbgAUFQjpYIn4B69dkaK4OLYLtnEdGMZ02UM2D1sWgd9jrMTzM_on_2I_Glr21Y06V7WDqyNJFkUai7T0iMz3CukjwHrxq3tJ8DZ2Bo4HeiAMb7_G7FtJBtRoyDu7lz5fd3YXJpmCaWRXARIUFuHv3A8KQbVBwG6lr_HXlzbKJrH4gHPyuddjQ" />
+                        </div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span
+                                class="bg-white text-black px-4 py-1 font-black text-xl transform -rotate-12 border-2 border-black">TONO
+                                VINTAGE</span>
+                        </div>
+                    </div>
+                    <div class="relative group flex-1">
+                        <div class="p-1 bg-zinc-800 transform rotate-1">
+                            <img alt="Micrófonos" class="w-full h-[240px] object-cover grayscale contrast-[1.8]"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeiqbEbQgXOm3u5ND0-L9VyCKnAlCwz0LA3Z1L_uwV0dIyWyUxMMXH2YVHJIF-LisiRCtAF_7A4_TebSyX7Yg8VJnJ3RWoA9FMNL1TN7IvEOoosNocofmzY9amPRgqtGbU04V9nf6-5k5B4ph4WWWvLhkCbcZuHXIW818MBrtIuCSYR8pTp1NEnHF2fQg5pYHlPSpcFFO9n-T04QRfcxoSK06qql6D44Brx5mYlUUhhlfmbC5t-hMpcuiBeiZ7FQwPfMkf-q2S6bI" />
+                        </div>
+                        <div class="absolute bottom-4 left-4 bg-primary text-white p-2 grunge-stencil font-bold">
+                            MICRÓFONOS LEGENDARIOS</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="pt-24 pb-16 bg-background-dark relative" id="contacto">
+        <div class="absolute top-0 left-0 w-full h-16 bg-[#050505]"
+            style="clip-path: polygon(0 0, 5% 40%, 10% 20%, 15% 50%, 20% 10%, 25% 60%, 30% 30%, 35% 80%, 40% 40%, 45% 70%, 50% 20%, 55% 90%, 60% 30%, 65% 60%, 70% 20%, 75% 80%, 80% 40%, 85% 70%, 90% 10%, 95% 40%, 100% 0, 100% 100%, 0 100%);">
+        </div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
+                <div class="space-y-8">
+                    <div class="relative inline-block">
+                        <h2 class="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none">
+                            ¿DÓNDE<br /><span class="text-primary">ESTAMOS?</span></h2>
+                        <div class="absolute -right-12 top-0 grunge-handwritten text-4xl text-white/20 select-none">MAPA
+                        </div>
+                    </div>
+                    <div class="space-y-8">
+                        <div
+                            class="relative bg-white text-black p-8 border-4 border-black transform -rotate-1 shadow-[10px_10px_0px_#ee2b2b]">
+                            <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-12 h-6 bg-zinc-400/50"></div>
+                            <p class="grunge-handwritten text-primary text-2xl mb-2">UBICACIÓN</p>
+                            <p class="text-4xl font-black uppercase mb-1">Av. San Martín 3047</p>
+                            <p class="typewriter text-xl opacity-70">CASEROS, BUENOS AIRES</p>
+                            <div
+                                class="mt-6 flex items-center gap-4 text-zinc-500 uppercase font-bold text-xs border-t border-zinc-200 pt-4">
+                                <span class="material-icons text-sm">qr_code_2</span>
+                                ESCANEÁ PARA LLEGAR
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-6 group">
+                            <div
+                                class="w-20 h-20 bg-primary text-white flex items-center justify-center transform rotate-12 group-hover:rotate-0 transition-transform shadow-xl">
+                                <span class="material-icons text-5xl">phone_iphone</span>
+                            </div>
+                            <div>
+                                <p class="grunge-stencil text-zinc-500 text-sm font-bold tracking-[0.3em]">WHATSAPP</p>
+                                <p class="text-4xl font-black tracking-tighter text-white">+54 11 3488-6422</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <a class="w-16 h-16 bg-white text-black flex items-center justify-center transform -rotate-12 border-2 border-black hover:bg-primary hover:text-white transition-all"
+                            href="#">
+                            <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z">
+                                </path>
+                            </svg>
+                        </a>
+                        <a class="w-16 h-16 bg-white text-black flex items-center justify-center transform rotate-6 border-2 border-black hover:bg-primary hover:text-white transition-all"
+                            href="#">
+                            <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
+                                <path
+                                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z">
+                                </path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute -inset-2 bg-primary transform -rotate-1"></div>
+                    <div
+                        class="relative aspect-square md:aspect-auto h-full bg-zinc-900 border-4 border-black overflow-hidden">
+                        <iframe
+                            src="https://maps.google.com/maps?q=Av.+San+Mart%C3%ADn+3047,+Caseros,+Buenos+Aires&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-12 border-t-2 border-zinc-800 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-4">
+                    <span class="grunge-handwritten text-3xl transform -rotate-2">CRÁNEO CANDENTE</span>
+                </div>
+                <div class="text-right">
+                    <p class="grunge-stencil text-zinc-600 text-sm uppercase tracking-widest">© 2024 • ESTUDIO
+                        PROFESIONAL DE GRABACIÓN Y ENSAYO</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

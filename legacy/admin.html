@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin de la Muerte | Cráneo Candente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Special+Elite&display=swap"
+        rel="stylesheet" />
+    <script src="js/modal.js" defer></script>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .grunge-font {
+            font-family: 'Special Elite', monospace;
+        }
+
+        .login-overlay {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+    <style>
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: 100px repeat(4, 1fr);
+            gap: 1px;
+            background-color: #333;
+            border: 1px solid #333;
+        }
+
+        .calendar-cell {
+            background-color: #111;
+            padding: 10px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        .calendar-header {
+            background-color: #222;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .slot-occupied {
+            background-color: #991b1b;
+            /* Red 800 */
+            color: white;
+            border: 1px solid #ef4444;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .slot-occupied:hover {
+            background-color: #b91c1c;
+        }
+
+        /* Month View Styles */
+        .month-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background-color: #333;
+            border: 1px solid #333;
+        }
+
+        .month-cell {
+            background-color: #111;
+            min-height: 100px;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: relative;
+        }
+
+        .month-day-number {
+            font-size: 0.8rem;
+            color: #555;
+            align-self: flex-end;
+            margin-bottom: 5px;
+        }
+
+        .month-cell.today {
+            background-color: #1a1a1a;
+        }
+
+        .month-cell.today .month-day-number {
+            color: #ef4444;
+            /* Red */
+            font-weight: bold;
+        }
+
+        .month-indicator {
+            width: 100%;
+            height: 4px;
+            margin-bottom: 2px;
+            border-radius: 2px;
+        }
+
+        .indicator-room-1 {
+            background-color: #ef4444;
+        }
+
+        .indicator-room-2 {
+            background-color: #f97316;
+        }
+
+        .indicator-room-3 {
+            background-color: #eab308;
+        }
+
+        .indicator-room-4 {
+            background-color: #84cc16;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen p-8">
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 z-50 flex items-center justify-center login-overlay">
+        <div class="bg-zinc-900 border-2 border-red-600 p-8 max-w-sm w-full text-center">
+            <h1 class="text-3xl font-black text-red-600 mb-6 uppercase">ACCESO RESTRINGIDO</h1>
+            <input type="password" id="password-input" placeholder="CONTRASEÑA"
+                class="w-full bg-black border border-zinc-700 p-3 text-white mb-4 focus:outline-none focus:border-red-600 text-center tracking-widest text-xl">
+            <button onclick="login()"
+                class="w-full bg-red-600 text-black font-bold py-3 hover:bg-red-500 transition-colors uppercase">
+                ENTRAR AL INFIERNO
+            </button>
+            <p id="error-msg" class="text-red-500 mt-4 text-sm hidden font-bold">CONTRASEÑA INCORRECTA, BOBINA</p>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="dashboard" class="hidden max-w-6xl mx-auto">
+        <header class="flex justify-between items-center mb-12 border-b border-zinc-800 pb-6">
+            <h1 class="text-4xl font-black text-white">PANEL DE CONTROL</h1>
+            <div class="flex items-center gap-4">
+                <div class="text-red-600 font-bold grunge-font text-xl">CRÁNEO CANDENTE</div>
+                <button onclick="logout()" class="text-xs uppercase hover:text-red-500">Salir</button>
+            </div>
+        </header>
+
+        <!-- View Toggles -->
+        <div class="flex justify-center gap-4 mb-8 flex-wrap">
+            <button id="btn-view-calendar" onclick="toggleView('calendar')"
+                class="px-4 py-2 border border-zinc-700 font-bold uppercase tracking-widest transition-all text-sm bg-zinc-800 text-white">
+                DIARIO
+            </button>
+            <button id="btn-view-month" onclick="toggleView('month')"
+                class="px-4 py-2 border border-zinc-700 font-bold uppercase tracking-widest transition-all text-sm text-zinc-500 hover:text-white">
+                MENSUAL
+            </button>
+            <button id="btn-view-list" onclick="toggleView('list')"
+                class="px-4 py-2 border border-zinc-700 font-bold uppercase tracking-widest transition-all text-sm text-zinc-500 hover:text-white">
+                LISTA
+            </button>
+        </div>
+
+        <!-- Date Navigator (Calendar Only) -->
+        <div id="date-navigator"
+            class="flex justify-center items-center gap-6 mb-8 bg-[#111] p-4 border border-zinc-800">
+            <button onclick="changeDate(-1)"
+                class="p-2 hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors">
+                ◀ ANTERIOR
+            </button>
+            <div class="text-xl font-bold text-white uppercase tracking-widest">
+                <span id="current-date-display">HOY</span>
+            </div>
+            <button onclick="changeDate(1)"
+                class="p-2 hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors">
+                SIGUIENTE ▶
+            </button>
+        </div>
+
+        <!-- Calendar Container -->
+        <div id="calendar-container">
+            <div id="calendar-view" class="mb-12 overflow-x-auto">
+                <div class="calendar-grid min-w-[800px]">
+                    <!-- Headers -->
+                    <div class="calendar-cell calendar-header text-zinc-500">HORA</div>
+                    <div class="calendar-cell calendar-header text-primary">SALA 1</div>
+                    <div class="calendar-cell calendar-header text-primary">SALA 2</div>
+                    <div class="calendar-cell calendar-header text-primary">SALA 3</div>
+                    <div class="calendar-cell calendar-header text-primary">SALA 4</div>
+
+                    <!-- Rows will be injected here -->
+                    <div id="calendar-rows" class="contents"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Month Container -->
+        <div id="month-container" class="hidden mb-12">
+            <div class="month-grid">
+                <!-- Week Headers -->
+                <div class="calendar-header p-2 text-sm text-zinc-500">DOM</div>
+                <div class="calendar-header p-2 text-sm text-zinc-500">LUN</div>
+                <div class="calendar-header p-2 text-sm text-zinc-500">MAR</div>
+                <div class="calendar-header p-2 text-sm text-zinc-500">MIE</div>
+                <div class="calendar-header p-2 text-sm text-zinc-500">JUE</div>
+                <div class="calendar-header p-2 text-sm text-zinc-500">VIE</div>
+                <div class="calendar-header p-2 text-sm text-zinc-500">SAB</div>
+
+                <!-- Days injected here -->
+                <div id="month-days" class="contents"></div>
+            </div>
+        </div>
+
+        <!-- List Container -->
+        <div id="list-container" class="grid grid-cols-1 gap-8 hidden">
+            <div class="bg-zinc-900 border border-zinc-800 p-6">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+                    TODAS LAS RESERVAS
+                </h2>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-zinc-400">
+                        <thead class="text-xs uppercase bg-black text-zinc-500">
+                            <tr>
+                                <th class="p-4">Sala</th>
+                                <th class="p-4">Fecha</th>
+                                <th class="p-4">Hora</th>
+                                <th class="p-4">Contacto</th>
+                                <th class="p-4">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reservations-table" class="divide-y divide-zinc-800">
+                            <!-- Rows injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <p id="empty-msg" class="text-center py-8 text-zinc-600 hidden">No hay reservas todavía. El silencio es
+                    ensordecedor.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        let authToken = localStorage.getItem('admin_token');
+        let currentDate = new Date();
+        let currentView = 'calendar'; // 'calendar' | 'list'
+
+        const timeSlots = [
+            "10:00 - 12:00", "12:00 - 14:00", "14:00 - 16:00",
+            "16:00 - 18:00", "18:00 - 20:00", "20:00 - 22:00", "22:00 - 00:00"
+        ];
+
+        // Init
+        if (authToken) {
+            showDashboard();
+        }
+
+        function formatDate(date) {
+            return date.toISOString().split('T')[0];
+        }
+
+        function changeDate(delta) {
+            if (currentView === 'month') {
+                // Change Month
+                currentDate.setMonth(currentDate.getMonth() + delta);
+            } else {
+                // Change Day
+                currentDate.setDate(currentDate.getDate() + delta);
+            }
+            updateDateDisplay();
+            loadReservations();
+        }
+
+        function updateDateDisplay() {
+            let options;
+            if (currentView === 'month') {
+                options = { year: 'numeric', month: 'long' };
+            } else {
+                options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            }
+            // Capitalize first letter
+            const dateStr = currentDate.toLocaleDateString('es-AR', options);
+            document.getElementById('current-date-display').textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+        }
+
+        function toggleView(view) {
+            currentView = view;
+
+            // UI References
+            const btnCalendar = document.getElementById('btn-view-calendar');
+            const btnMonth = document.getElementById('btn-view-month');
+            const btnList = document.getElementById('btn-view-list');
+
+            const calendarContainer = document.getElementById('calendar-container');
+            const monthContainer = document.getElementById('month-container');
+            const listContainer = document.getElementById('list-container');
+            const dateNav = document.getElementById('date-navigator');
+
+            // Reset Buttons
+            [btnCalendar, btnMonth, btnList].forEach(btn => {
+                btn.classList.remove('bg-zinc-800', 'text-white');
+                btn.classList.add('text-zinc-500');
+            });
+
+            // Reset Containers
+            [calendarContainer, monthContainer, listContainer].forEach(el => el.classList.add('hidden'));
+
+            // Activate Selected
+            if (view === 'calendar') {
+                btnCalendar.classList.add('bg-zinc-800', 'text-white');
+                btnCalendar.classList.remove('text-zinc-500');
+                calendarContainer.classList.remove('hidden');
+                dateNav.classList.remove('hidden');
+            } else if (view === 'month') {
+                btnMonth.classList.add('bg-zinc-800', 'text-white');
+                btnMonth.classList.remove('text-zinc-500');
+                monthContainer.classList.remove('hidden');
+                dateNav.classList.remove('hidden');
+            } else {
+                btnList.classList.add('bg-zinc-800', 'text-white');
+                btnList.classList.remove('text-zinc-500');
+                listContainer.classList.remove('hidden');
+                dateNav.classList.add('hidden');
+            }
+
+            updateDateDisplay();
+            loadReservations();
+        }
+
+        async function login() {
+            const password = document.getElementById('password-input').value;
+
+            try {
+                const res = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    authToken = data.token;
+                    localStorage.setItem('admin_token', authToken);
+                    showDashboard();
+                } else {
+                    document.getElementById('error-msg').classList.remove('hidden');
+                }
+            } catch (err) {
+                console.error("Error cargando reservas:", err);
+                showModal("ERROR", "Error de conexión", "error");
+            }
+        }
+
+        function logout() {
+            authToken = null;
+            localStorage.removeItem('admin_token');
+            document.getElementById('login-modal').classList.remove('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('password-input').value = '';
+        }
+
+        function showDashboard() {
+            document.getElementById('login-modal').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            updateDateDisplay();
+            toggleView('calendar'); // Default
+        }
+
+        async function loadReservations() {
+            try {
+                let url = `${API_URL}/admin/reservations`;
+
+                if (currentView === 'calendar') {
+                    const dateStr = formatDate(currentDate);
+                    url += `?date=${dateStr}`;
+                } else if (currentView === 'month') {
+                    const monthStr = currentDate.toISOString().slice(0, 7); // YYYY-MM
+                    url += `?month=${monthStr}`;
+                }
+
+                const res = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                if (res.status === 401) {
+                    logout();
+                    return;
+                }
+
+                const data = await res.json();
+
+                if (currentView === 'calendar') {
+                    renderCalendar(data);
+                } else if (currentView === 'month') {
+                    renderMonthCalendar(data);
+                } else {
+                    renderTable(data);
+                }
+
+            } catch (err) {
+                console.error("Error cargando reservas:", err);
+                showModal("ERROR", "Error de conexión", "error");
+            }
+        }
+
+        function renderCalendar(reservations) {
+            const container = document.getElementById('calendar-rows');
+            if (!container) return;
+            container.innerHTML = '';
+
+            timeSlots.forEach(slot => {
+                // Time Column
+                const timeCell = document.createElement('div');
+                timeCell.className = 'calendar-cell font-mono text-zinc-400 bg-[#161616]';
+                timeCell.innerText = slot;
+                container.appendChild(timeCell);
+
+                // Room Columns (1 to 4)
+                for (let i = 1; i <= 4; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'calendar-cell';
+
+                    // Find res
+                    // Note: API returns room: { id, name } structure.
+                    // So we check r.room.id
+                    const res = reservations.find(r => r.room.id === i && r.time === slot);
+
+                    if (res) {
+                        cell.innerHTML = `
+                            <div class="slot-occupied" onclick="deleteReservation('${res.id}')">
+                                <span class="font-bold text-xs uppercase">${res.contact.split(' - ')[0]}</span>
+                                <span class="text-[10px] opacity-75">${res.contact.split(' - ')[1] || ''}</span>
+                                <span class="text-[10px] mt-1 underline">ELIMINAR</span>
+                            </div>
+                        `;
+                    } else {
+                        cell.innerHTML = `<span class="text-zinc-800 text-xs">LIBRE</span>`;
+                    }
+                    container.appendChild(cell);
+                }
+            });
+        }
+
+        function renderMonthCalendar(reservations) {
+            const container = document.getElementById('month-days');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+
+            // First day of month (0 = Sunday, 1 = Monday, etc)
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Empty cells for padding
+            for (let i = 0; i < firstDay; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'month-cell bg-transparent border-0';
+                container.appendChild(cell);
+            }
+
+            // Days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const cell = document.createElement('div');
+                cell.className = 'month-cell hover:bg-[#161616] transition-colors cursor-pointer';
+
+                // Highlight today
+                const isToday = new Date().toDateString() === new Date(year, month, day).toDateString();
+                if (isToday) cell.classList.add('today');
+
+                // Click to go to daily view
+                cell.onclick = () => {
+                    currentDate.setFullYear(year, month, day);
+                    toggleView('calendar');
+                };
+
+                // Date Number
+                cell.innerHTML = `<div class="month-day-number">${day}</div>`;
+
+                // Find reservations for this day
+                const currentDayStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+                // Group by Room to show indicators
+                // We want to know which rooms have at least ONE booking today
+                const dayReservations = reservations.filter(r => r.date === currentDayStr);
+                const occupiedRooms = [...new Set(dayReservations.map(r => r.room.id))].sort();
+
+                if (occupiedRooms.length > 0) {
+                    const indicatorContainer = document.createElement('div');
+                    indicatorContainer.className = 'w-full flex flex-col gap-[2px] mt-2';
+
+                    occupiedRooms.forEach(roomId => {
+                        const dot = document.createElement('div');
+                        dot.className = `month-indicator indicator-room-${roomId}`;
+                        dot.title = `Sala ${roomId} Ocupada`;
+                        indicatorContainer.appendChild(dot);
+                    });
+
+                    cell.appendChild(indicatorContainer);
+                }
+
+                container.appendChild(cell);
+            }
+        }
+
+        function renderTable(reservations) {
+            const tbody = document.getElementById('reservations-table');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            if (reservations.length === 0) {
+                document.getElementById('empty-msg').classList.remove('hidden');
+            } else {
+                document.getElementById('empty-msg').classList.add('hidden');
+            }
+
+            reservations.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            reservations.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-zinc-800 transition-colors";
+                tr.innerHTML = `
+                    <td class="p-4 font-bold text-white">${r.room.name}</td>
+                    <td class="p-4">${r.date}</td>
+                    <td class="p-4">${r.time}</td>
+                    <td class="p-4 font-mono text-sm">${r.contact || '-'}</td>
+                    <td class="p-4">
+                        <button onclick="deleteReservation('${r.id}')" class="text-red-500 hover:text-red-400 font-bold text-xs uppercase border border-red-900 px-3 py-1 hover:bg-red-900/50 transition-all">
+                            ELIMINAR
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function deleteReservation(id) {
+            if (!confirm("¿Seguro que querés borrar esta reserva? No hay vuelta atrás.")) return;
+
+            try {
+                const res = await fetch(`${API_URL}/reservations/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                if (res.ok) {
+                    loadReservations(); // Reload
+                } else {
+                    showModal("ERROR", "Error eliminando reserva (capaz expiró tu sesión)", "error");
+                    loadReservations();
+                }
+            } catch (err) {
+                showModal("ERROR", "Error eliminando reserva", "error");
+            }
+        }
+    </script>
+</body>
+
+</html>

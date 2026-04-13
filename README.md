@@ -1,36 +1,114 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Craneo Candente - Prototype (Next.js + Prisma + Vercel)
 
-## Getting Started
+Prototipo funcional deployable para reservas online de salas de ensayo y grabacion.
 
-First, run the development server:
+## Stack
+
+- Next.js App Router + TypeScript + Tailwind
+- API Routes en `/api/*`
+- Prisma ORM + Postgres gestionado
+- Sesiones admin por cookie `httpOnly`
+- Vitest (unit/integration) + Playwright (E2E)
+
+## Estructura
+
+- `src/app` -> UI + API handlers
+- `src/lib` -> dominio, auth, validaciones, serializers
+- `prisma` -> schema + seed
+- `legacy` -> app anterior (Express + HTML) conservada como referencia
+
+## Setup local
+
+1. Instalar dependencias:
+
+```bash
+npm install
+```
+
+2. Crear entorno local desde `.env.example`:
+
+```bash
+copy .env.example .env
+```
+
+3. Configurar una `DATABASE_URL` valida de Postgres.
+
+4. Generar cliente Prisma:
+
+```bash
+npm run db:generate
+```
+
+5. Aplicar esquema en DB:
+
+```bash
+npm run db:migrate
+```
+
+6. Seed inicial (4 salas + admin):
+
+```bash
+npm run db:seed
+```
+
+7. Correr app:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `npm run dev` -> desarrollo
+- `npm run build` -> build de produccion
+- `npm run start` -> correr build
+- `npm run lint` -> lint
+- `npm test` -> unit + integration
+- `npm run test:e2e` -> E2E con Playwright
+- `npm run db:generate` -> prisma generate
+- `npm run db:migrate` -> migraciones locales
+- `npm run db:seed` -> datos semilla
+- `npm run db:studio` -> Prisma Studio
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Contratos API
 
-## Learn More
+- `GET /api/rooms`
+- `GET /api/availability`
+- `POST /api/reservations`
+- `POST /api/login`
+- `POST /api/logout`
+- `GET /api/admin/reservations?date=YYYY-MM-DD|month=YYYY-MM`
+- `DELETE /api/reservations/:id`
 
-To learn more about Next.js, take a look at the following resources:
+## Seguridad admin
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Password hash con bcrypt
+- Sesion persistida en `sessions` (DB)
+- Cookie `httpOnly`, `secure` en produccion, `sameSite=lax`
+- Middleware para proteger `/admin/*` (excepto `/admin/login`)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## GitHub flow recomendado
 
-## Deploy on Vercel
+- Rama protegida: `main`
+- Trabajo por feature branch: `feature/*`
+- Merge solo via Pull Request con CI en verde
+- Deploy preview automatico por PR en Vercel
+- Deploy production automatico al merge en `main`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploy en Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Importar repo en Vercel.
+2. Configurar variables en `Preview` y `Production`:
+   - `DATABASE_URL`
+   - `SESSION_SECRET`
+   - `ADMIN_SEED_USERNAME`
+   - `ADMIN_SEED_PASSWORD_HASH`
+3. Ejecutar migracion/seed en entorno conectado (CLI o job inicial).
+4. Verificar:
+   - Home carga
+   - Reserva crea bloque de agenda
+   - Admin protegido y operativo
+
+## Nota
+
+La version anterior se mantiene en `legacy/` para referencia y rollback funcional.

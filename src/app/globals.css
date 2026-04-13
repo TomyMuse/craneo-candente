@@ -1,26 +1,130 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #090909;
+  --bg-soft: #121212;
+  --ink: #f6f6f6;
+  --muted: #9d9d9d;
+  --line: #2a2a2a;
+  --accent: #ff3d14;
+  --accent-soft: #ff7a3d;
+  --font-display: "Impact", "Haettenschweiler", "Arial Narrow Bold", sans-serif;
+  --font-body: "Trebuchet MS", "Segoe UI", "Tahoma", sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body), sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.brand-display {
+  font-family: var(--font-display), sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.text-muted {
+  color: var(--muted);
+}
+
+.section-shell {
+  width: min(1160px, calc(100% - 2.5rem));
+  margin-inline: auto;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0.82)),
+    radial-gradient(circle at 16% 18%, rgba(255, 61, 20, 0.35), transparent 40%),
+    url("https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1800&q=80");
+  background-size: cover;
+  background-position: center;
+}
+
+.grit-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image: radial-gradient(#ffffff24 0.8px, transparent 0.8px);
+  background-size: 3px 3px;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg-soft) 92%, black 8%);
+}
+
+.accent-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 75%, black 25%);
+  padding: 0.4rem 0.85rem;
+  color: var(--accent-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+}
+
+.action-btn {
+  border: 1px solid var(--accent);
+  color: white;
+  background: linear-gradient(180deg, var(--accent-soft), var(--accent));
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.quiet-btn {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+}
+
+.enter-up {
+  animation: enter-up 500ms ease both;
+}
+
+@keyframes enter-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (max-width: 720px) {
+  .section-shell {
+    width: min(1160px, calc(100% - 1.4rem));
+  }
 }

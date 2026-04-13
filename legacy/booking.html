@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Reservar | Cráneo Candente</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Permanent+Marker&family=Special+Elite&family=Cutive+Mono&family=Frijole&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-[#0a0a0a] text-white overflow-x-hidden cursor-crosshair;
+                font-family: 'Montserrat', sans-serif;
+            }
+        }
+        @layer components {
+            .grunge-stencil {
+                font-family: 'Special Elite', monospace;
+            }
+            .grunge-handwritten {
+                font-family: 'Permanent Marker', cursive;
+            }
+            .typewriter {
+                font-family: 'Cutive Mono', monospace;
+            }
+            .glitch-text {
+                font-family: 'Montserrat', sans-serif;
+                text-shadow: 2px 0 #ee2b2b, -2px 0 #00fff9;
+            }
+            .gritty-overlay {
+                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+                opacity: 0.12;
+            }
+            .concrete-bg {
+                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.15' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+                opacity: 0.05;
+            }
+            @keyframes fire {
+                0%, 100% {
+                    box-shadow: 0 0 10px #ff6b00, 0 0 20px #ff6b00, 0 0 30px #ee2b2b, 0 0 40px #ee2b2b;
+                }
+                50% {
+                    box-shadow: 0 0 20px #ff6b00, 0 0 30px #ff6b00, 0 0 40px #ee2b2b, 0 0 50px #ee2b2b, 0 0 60px #ff6b00;
+                }
+            }
+            .fire-active {
+                animation: fire 0.3s ease-in-out infinite;
+                background: linear-gradient(180deg, #ee2b2b 0%, #ff6b00 100%) !important;
+                color: white !important;
+                border-color: #ee2b2b !important;
+            }
+            .card-selected {
+                border-color: #ee2b2b !important;
+                background-color: #1a1a1a !important;
+                transform: scale(1.02);
+            }
+            /* Wizard Steps Transition */
+            .step-container {
+                display: none;
+                opacity: 0;
+                transition: opacity 0.5s ease-in-out;
+            }
+            .step-active {
+                display: block;
+                opacity: 1;
+                animation: fadeIn 0.5s forwards;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ee2b2b",
+                        "accent": "#ff6b00",
+                        "background-dark": "#0a0a0a",
+                        "card-dark": "#151515",
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="selection:bg-primary selection:text-white pb-32">
+    <div class="fixed inset-0 gritty-overlay pointer-events-none z-[100]"></div>
+    <div class="fixed inset-0 concrete-bg pointer-events-none z-[99]"></div>
+
+    <!-- Nav -->
+    <nav class="fixed top-0 w-full z-[110] px-6 py-4 bg-black/80 backdrop-blur-sm border-b border-white/5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="relative">
+                    <div class="w-12 h-12 flex items-center justify-center relative z-10 overflow-hidden">
+                        <img src="logo.png" alt="Cráneo Candente" class="w-full h-full object-contain" />
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span
+                        class="grunge-handwritten text-xl leading-none text-white tracking-widest group-hover:text-primary transition-colors">VOLVER</span>
+                </div>
+            </a>
+            <div class="flex items-center gap-6">
+                <a href="admin.html" class="group relative" title="Panel de Admin">
+                    <span
+                        class="material-icons text-zinc-600 text-2xl group-hover:text-primary transition-colors duration-300 group-hover:animate-[spin_4s_linear_infinite]">settings</span>
+                    <div
+                        class="absolute inset-0 bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                </a>
+                <div class="grunge-stencil text-zinc-500 text-sm">PASO <span id="step-indicator">1</span>/3</div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-32 max-w-5xl mx-auto px-6 min-h-screen flex flex-col justify-center">
+
+        <!-- Step 1: Salas -->
+        <div id="step-1" class="step-container step-active">
+            <h1
+                class="text-4xl md:text-6xl font-black uppercase mb-2 glitch-text tracking-tighter text-center md:text-left">
+                PASO 1
+            </h1>
+            <h2 class="text-2xl md:text-3xl font-bold uppercase mb-8 text-zinc-500 text-center md:text-left">
+                SELECCIONÁ TU <span class="text-primary">SALA</span>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Room Cards (Injected by JS) -->
+                <div id="rooms-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 col-span-full w-full">
+                    <!-- Loading State -->
+                    <div class="col-span-4 text-center py-12">
+                        <span class="material-icons animate-spin text-4xl text-primary">cached</span>
+                        <p class="mt-4 grunge-stencil text-zinc-500">CARGANDO SALAS...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Horarios -->
+        <div id="step-2" class="step-container">
+            <button onclick="goToStep(1)"
+                class="mb-6 text-zinc-500 hover:text-white flex items-center gap-2 grunge-stencil text-sm">
+                <span class="material-icons text-sm">arrow_back</span> ATRÁS SELECCIONAR SALA
+            </button>
+            <h1
+                class="text-4xl md:text-6xl font-black uppercase mb-2 glitch-text tracking-tighter text-center md:text-left">
+                PASO 2
+            </h1>
+            <h2 class="text-2xl md:text-3xl font-bold uppercase mb-8 text-zinc-500 text-center md:text-left">
+                ELEGÍ TU <span class="text-zinc-500">HORARIO</span>
+            </h2>
+
+            <div class="flex flex-col md:flex-row gap-8">
+                <!-- Date Picker Style -->
+                <div class="w-full md:w-1/3">
+                    <div class="bg-[#111] border-2 border-zinc-800 p-6">
+                        <label class="block grunge-stencil text-zinc-500 mb-2 uppercase">Fecha</label>
+                        <input type="date" id="date-input" onchange="renderTimeSlots()"
+                            class="w-full bg-zinc-900 border-2 border-zinc-700 p-3 text-white focus:border-primary focus:ring-0 outline-none grunge-stencil rounded-none"
+                            min="2024-01-01">
+                        <p class="mt-2 text-xs text-zinc-600 italic">Reservas con 24hs de anticipación mínima.</p>
+                    </div>
+                </div>
+
+                <!-- Time Grid -->
+                <div class="w-full md:w-2/3">
+                    <label class="block grunge-stencil text-zinc-500 mb-2 uppercase">Horario (Bloques de 2hs)</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="time-grid">
+                        <!-- Slots will be injected here -->
+                        <div class="p-4 border-2 border-zinc-800 text-zinc-600 text-center grunge-stencil text-sm">
+                            SELECCIONÁ UNA FECHA PRIMERO</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Datos del Loco -->
+        <div id="step-3" class="step-container">
+            <button onclick="goToStep(2)"
+                class="mb-6 text-zinc-500 hover:text-white flex items-center gap-2 grunge-stencil text-sm">
+                <span class="material-icons text-sm">arrow_back</span> ATRÁS SELECCIONAR HORARIO
+            </button>
+            <h1
+                class="text-4xl md:text-6xl font-black uppercase mb-2 glitch-text tracking-tighter text-center md:text-left">
+                PASO 3
+            </h1>
+            <h2 class="text-2xl md:text-3xl font-bold uppercase mb-8 text-zinc-500 text-center md:text-left">
+                TUS <span class="text-zinc-500">DATOS</span>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <label class="block grunge-stencil text-zinc-500 mb-2 uppercase">Nombre Completo</label>
+                    <input type="text" id="name-input" placeholder="Ej: Juan Perez"
+                        class="w-full bg-zinc-900 border-2 border-zinc-700 p-3 text-white focus:border-primary focus:ring-0 outline-none grunge-stencil placeholder-zinc-700">
+                </div>
+                <div>
+                    <label class="block grunge-stencil text-zinc-500 mb-2 uppercase">Teléfono / WhatsApp</label>
+                    <input type="tel" id="phone-input" placeholder="Ej: 11 1234 5678"
+                        class="w-full bg-zinc-900 border-2 border-zinc-700 p-3 text-white focus:border-primary focus:ring-0 outline-none grunge-stencil placeholder-zinc-700">
+                </div>
+            </div>
+
+            <!-- Summary & Action -->
+            <div class="bg-[#111] border-2 border-primary p-6 md:p-8 text-center bg-opacity-50 duct-tape">
+                <div class="text-zinc-400 text-sm uppercase grunge-stencil tracking-widest mb-4">RESUMEN DE RESERVA
+                </div>
+                <div class="text-3xl font-black uppercase text-white mb-2">
+                    <span id="summary-room" class="text-primary">SALA X</span>
+                </div>
+                <div class="text-xl text-white mb-6">
+                    <span id="summary-date">DD/MM</span> • <span id="summary-time">--:-- HS</span>
+                </div>
+                <div class="text-4xl font-black text-white mb-8" id="summary-price">$0</div>
+
+                <button onclick="confirmReservation()"
+                    class="w-full md:w-auto fire-active bg-primary text-white font-black text-xl px-12 py-4 uppercase tracking-tighter hover:scale-105 transition-transform skew-x-[-10deg]">
+                    <span class="skew-x-[10deg] inline-block">CONFIRMAR RESERVA</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+
+        // State
+        let currentStep = 1;
+        let selectedRoom = null;
+        let selectedDate = null;
+        let selectedTime = null;
+        let selectedPrice = 0;
+        let reservations = [];
+
+        // Init Date Input to Tommorow
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        document.getElementById('date-input').min = tomorrow.toISOString().split('T')[0];
+        document.getElementById('date-input').value = tomorrow.toISOString().split('T')[0];
+
+        // Load reservations and rooms on load
+        Promise.all([fetchRooms(), fetchReservations()]);
+
+        async function fetchRooms() {
+            try {
+                const res = await fetch(`${API_URL}/rooms`);
+                const rooms = await res.json();
+                renderRooms(rooms);
+            } catch (err) {
+                console.error("Error fetching rooms:", err);
+                document.getElementById('rooms-grid').innerHTML = '<p class="text-red-500">Error cargando salas.</p>';
+            }
+        }
+
+        function renderRooms(rooms) {
+            const grid = document.getElementById('rooms-grid');
+            grid.innerHTML = '';
+
+            rooms.forEach(room => {
+                const btn = document.createElement('button');
+                btn.id = `room-${room.id}`;
+                btn.onclick = () => selectRoom(room.id, room.name, room.price);
+                btn.className = "room-card relative group bg-[#111] border-2 border-zinc-800 p-4 text-left hover:border-zinc-600 transition-all duration-300 transform hover:-translate-y-2";
+
+                const detailsHtml = room.details.map(d => `<li>• ${d}</li>`).join('');
+
+                btn.innerHTML = `
+                    <div class="aspect-video w-full bg-zinc-900 mb-4 overflow-hidden relative grayscale group-hover:grayscale-0 transition-all">
+                        <img src="${room.image}" class="object-cover w-full h-full opacity-60 group-hover:opacity-100">
+                        <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 grunge-stencil">
+                            ${room.description}
+                        </div>
+                    </div>
+                    <h3 class="font-black text-2xl uppercase mb-2">${room.name}</h3>
+                    <ul class="text-xs text-zinc-400 space-y-1 typewriter mb-4">
+                        ${detailsHtml}
+                    </ul>
+                    <div class="text-primary font-bold text-xl">$${room.price.toLocaleString()} <span class="text-sm text-zinc-500 font-normal">/hora</span></div>
+                `;
+
+                grid.appendChild(btn);
+            });
+        }
+
+        async function fetchReservations() {
+            try {
+                const res = await fetch(`${API_URL}/availability`);
+                reservations = await res.json();
+                renderTimeSlots();
+            } catch (err) {
+                console.error("Error fetching reservations:", err);
+            }
+        }
+
+        function goToStep(step) {
+            // Hide all
+            document.querySelectorAll('.step-container').forEach(el => {
+                el.classList.remove('step-active');
+            });
+            // Show new
+            document.getElementById(`step-${step}`).classList.add('step-active');
+            currentStep = step;
+            document.getElementById('step-indicator').innerText = step;
+        }
+
+        function selectRoom(id, name, price) {
+            // Update State
+            selectedRoom = { id, name, price };
+
+            // Go to next step
+            goToStep(2);
+
+            updateSummary();
+            renderTimeSlots();
+        }
+
+        const timeSlots = [
+            "10:00 - 12:00", "12:00 - 14:00", "14:00 - 16:00",
+            "16:00 - 18:00", "18:00 - 20:00", "20:00 - 22:00", "22:00 - 00:00"
+        ];
+
+        function renderTimeSlots() {
+            if (!selectedRoom) return;
+
+            const grid = document.getElementById('time-grid');
+            grid.innerHTML = '';
+
+            const dateVal = document.getElementById('date-input').value;
+
+            timeSlots.forEach((slot) => {
+                // Check real availability
+                const isTaken = reservations.some(r =>
+                    r.room_id === selectedRoom.id &&
+                    r.date === dateVal &&
+                    r.time === slot
+                );
+
+                const btn = document.createElement('button');
+                btn.className = `p-3 border-2 text-center transition-all duration-200 uppercase font-bold text-sm ${isTaken
+                    ? 'border-zinc-800 text-zinc-700 bg-zinc-900/50 cursor-not-allowed decoration-line-through'
+                    : 'border-zinc-600 text-white hover:border-primary hover:text-primary hover:bg-[#111]'
+                    }`;
+                btn.textContent = slot;
+
+                if (!isTaken) {
+                    btn.onclick = () => selectTime(slot, btn);
+                } else {
+                    btn.title = "Ocupado";
+                    btn.disabled = true;
+                }
+
+                grid.appendChild(btn);
+            });
+        }
+
+        function selectTime(slot, btnElement) {
+            selectedTime = slot;
+            goToStep(3); // Go to contact form
+            updateSummary();
+        }
+
+        function updateSummary() {
+            if (selectedRoom) {
+                document.getElementById('summary-room').innerText = selectedRoom.name;
+                const total = selectedRoom.price * 2;
+                document.getElementById('summary-price').innerText = `$${total.toLocaleString()}`;
+            }
+
+            if (selectedTime) {
+                const dateVal = document.getElementById('date-input').value; // YYYY-MM-DD
+                const [y, m, d] = dateVal.split('-');
+                document.getElementById('summary-date').innerText = `${d}/${m}`;
+                document.getElementById('summary-time').innerText = selectedTime + ' HS';
+            }
+        }
+
+        async function confirmReservation() {
+            console.log("Attempting to confirm reservation...");
+
+            if (!selectedRoom || !selectedTime) {
+                if (typeof showModal !== 'undefined') {
+                    showModal("FALTAN DATOS", "Seleccioná sala y horario.", "error");
+                } else {
+                    alert("FALTAN DATOS: Seleccioná sala y horario.");
+                }
+                return;
+            }
+
+            const dateVal = document.getElementById('date-input').value;
+            const nameVal = document.getElementById('name-input').value;
+            const phoneVal = document.getElementById('phone-input').value;
+
+            if (nameVal.length < 3) {
+                if (typeof showModal !== 'undefined') showModal("FALTAN DATOS", "Por favor, ingresá tu nombre completo.", "error");
+                else alert("Por favor, ingresá tu nombre completo.");
+                return;
+            }
+
+            // Remove spaces and dashes for check
+            const cleanPhone = phoneVal.replace(/[\s-]/g, '');
+            if (cleanPhone.length < 8 || !/^\d+$/.test(cleanPhone)) {
+                if (typeof showModal !== 'undefined') showModal("TELÉFONO INVÁLIDO", "Por favor, ingresá un número de teléfono válido (mínimo 8 dígitos).", "error");
+                else alert("Por favor, ingresá un número de teléfono válido.");
+                return;
+            }
+
+            // 1. Save to Backend
+            try {
+                const res = await fetch(`${API_URL}/reservations`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        room: selectedRoom,
+                        date: dateVal,
+                        time: selectedTime,
+                        contact: `${nameVal} - ${phoneVal}`
+                    })
+                });
+
+                if (!res.ok) {
+                    const err = await res.json();
+                    if (typeof showModal !== 'undefined') showModal("ERROR", err.error || "No se pudo reservar", "error");
+                    else alert("Error: " + (err.error || "No se pudo reservar"));
+                    return;
+                }
+
+                // 2. Success Message
+                if (typeof showModal !== 'undefined') {
+                    showModal("¡RESERVA CONFIRMADA! 🤘", `Sala: ${selectedRoom.name}\nFecha: ${dateVal}\nHora: ${selectedTime}\n\nTe esperamos.`, "success");
+                } else {
+                    alert(`¡RESERVA CONFIRMADA! 🤘\nSala: ${selectedRoom.name}\nFecha: ${dateVal}\nHora: ${selectedTime}\n\nTe esperamos.`);
+                }
+
+                // Reload to reset
+                setTimeout(() => location.href = 'index.html', 3000);
+
+            } catch (err) {
+                console.error(err);
+                if (typeof showModal !== 'undefined') showModal("ERROR DE CONEXIÓN", "No se pudo conectar con el servidor.", "error");
+                else alert("ERROR DE CONEXIÓN: No se pudo conectar con el servidor.");
+            }
+        }
+    </script>
+</body>
+
+</html>
