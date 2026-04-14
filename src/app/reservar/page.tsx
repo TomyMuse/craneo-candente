@@ -228,7 +228,7 @@ export default function BookingPage() {
                       setSelectedDate(event.target.value);
                       setSelectedTime(null);
                     }}
-                    className="w-full border border-[var(--line)] bg-black px-3 py-2 outline-none focus:border-[var(--accent)]"
+                    className="input-industrial"
                   />
                 </label>
 
@@ -293,7 +293,7 @@ export default function BookingPage() {
                   <input
                     value={name}
                     onChange={(event) => setName(event.target.value)}
-                    className="w-full border border-[var(--line)] bg-black px-3 py-2 outline-none focus:border-[var(--accent)]"
+                    className="input-industrial"
                     placeholder="Ej: Juan Perez"
                   />
                 </label>
@@ -302,7 +302,7 @@ export default function BookingPage() {
                   <input
                     value={phone}
                     onChange={(event) => setPhone(event.target.value)}
-                    className="w-full border border-[var(--line)] bg-black px-3 py-2 outline-none focus:border-[var(--accent)]"
+                    className="input-industrial"
                     placeholder="Ej: 11 1234 5678"
                   />
                 </label>

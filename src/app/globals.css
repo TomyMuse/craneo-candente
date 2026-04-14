@@ -1,15 +1,14 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 :root {
-  --bg: #0a0a0b;
-  --bg-soft: #121216;
-  --ink: #f5f5f5;
-  --muted: #a4a4ab;
-  --line: #2f2f36;
-  --accent: #e53b19;
-  --accent-soft: #ff6a35;
-  --font-display: "Impact", "Haettenschweiler", "Arial Narrow Bold", sans-serif;
-  --font-body: "Trebuchet MS", "Segoe UI", "Tahoma", sans-serif;
+  --bg: #131313;
+  --bg-soft: #1c1b1b;
+  --bg-hi: #2a2a2a;
+  --ink: #e5e2e1;
+  --muted: #b0a39f;
+  --line: #353534;
+  --accent: #bf360c;
+  --accent-soft: #ffb5a1;
 }
 
 * {
@@ -21,12 +20,23 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  background:
-    radial-gradient(circle at 18% 14%, #ffffff08 0%, transparent 32%),
-    radial-gradient(circle at 80% 72%, #e53b1920 0%, transparent 34%),
-    var(--bg);
   color: var(--ink);
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-body), Inter, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 20% 10%, #ffffff08 0%, transparent 30%),
+    radial-gradient(circle at 80% 70%, #bf360c24 0%, transparent 34%),
+    var(--bg);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.03;
+  background-image: radial-gradient(#ffffff 0.8px, transparent 0.8px);
+  background-size: 3px 3px;
 }
 
 a {
@@ -40,9 +50,10 @@ img {
 }
 
 .brand-display {
-  font-family: var(--font-display), sans-serif;
-  letter-spacing: 0.045em;
+  font-family: var(--font-display), "Space Grotesk", sans-serif;
   text-transform: uppercase;
+  letter-spacing: -0.015em;
+  font-weight: 800;
 }
 
 .text-muted {
@@ -54,65 +65,47 @@ img {
   margin-inline: auto;
 }
 
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0.82)),
-    radial-gradient(circle at 16% 18%, rgba(255, 61, 20, 0.35), transparent 40%),
-    url("https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1800&q=80");
-  background-size: cover;
-  background-position: center;
-}
-
-.grit-layer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.18;
-  background-image: radial-gradient(#ffffff24 0.8px, transparent 0.8px);
-  background-size: 3px 3px;
-}
-
 .panel {
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--bg-soft) 92%, black 8%);
-  box-shadow: 0 10px 24px #00000033;
-}
-
-.accent-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  border: 1px solid color-mix(in srgb, var(--accent) 75%, black 25%);
-  padding: 0.4rem 0.85rem;
-  color: var(--accent-soft);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.75rem;
+  border: 0;
+  background: var(--bg-soft);
+  box-shadow: 8px 8px 0 #0e0e0e80;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
 }
 
 .action-btn {
-  border: 1px solid var(--accent);
-  color: white;
-  background: linear-gradient(180deg, var(--accent-soft), var(--accent));
+  border: 0;
+  color: #ffe1da;
+  background: linear-gradient(45deg, var(--accent-soft), var(--accent));
   text-transform: uppercase;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease;
-  box-shadow: 0 8px 16px #e53b1930;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  transition: transform 180ms ease, filter 180ms ease;
 }
 
 .action-btn:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.05);
-  box-shadow: 0 12px 22px #e53b194a;
+  transform: translate(1px, 1px);
+  filter: brightness(1.04);
 }
 
 .quiet-btn {
-  border: 1px solid var(--line);
+  border: 1px solid #ffffff1f;
   background: transparent;
   color: var(--ink);
+}
+
+.input-industrial {
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid var(--line);
+  background: #0e0e0e;
+  color: var(--ink);
+  padding: 0.65rem 0.75rem;
+  outline: none;
+  transition: border-color 150ms ease;
+}
+
+.input-industrial:focus {
+  border-bottom-color: var(--accent-soft);
 }
 
 .enter-up {
