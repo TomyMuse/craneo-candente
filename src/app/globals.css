@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #090909;
-  --bg-soft: #121212;
-  --ink: #f6f6f6;
-  --muted: #9d9d9d;
-  --line: #2a2a2a;
-  --accent: #ff3d14;
-  --accent-soft: #ff7a3d;
+  --bg: #0a0a0b;
+  --bg-soft: #121216;
+  --ink: #f5f5f5;
+  --muted: #a4a4ab;
+  --line: #2f2f36;
+  --accent: #e53b19;
+  --accent-soft: #ff6a35;
   --font-display: "Impact", "Haettenschweiler", "Arial Narrow Bold", sans-serif;
   --font-body: "Trebuchet MS", "Segoe UI", "Tahoma", sans-serif;
 }
@@ -21,7 +21,10 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 18% 14%, #ffffff08 0%, transparent 32%),
+    radial-gradient(circle at 80% 72%, #e53b1920 0%, transparent 34%),
+    var(--bg);
   color: var(--ink);
   font-family: var(--font-body), sans-serif;
 }
@@ -38,7 +41,8 @@ img {
 
 .brand-display {
   font-family: var(--font-display), sans-serif;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
 }
 
 .text-muted {
@@ -73,6 +77,7 @@ img {
 .panel {
   border: 1px solid var(--line);
   background: color-mix(in srgb, var(--bg-soft) 92%, black 8%);
+  box-shadow: 0 10px 24px #00000033;
 }
 
 .accent-pill {
@@ -94,12 +99,14 @@ img {
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 0.08em;
-  transition: transform 180ms ease, filter 180ms ease;
+  transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease;
+  box-shadow: 0 8px 16px #e53b1930;
 }
 
 .action-btn:hover {
   transform: translateY(-2px);
   filter: brightness(1.05);
+  box-shadow: 0 12px 22px #e53b194a;
 }
 
 .quiet-btn {

@@ -188,9 +188,9 @@ export default function BookingPage() {
                         }}
                         className={`text-left transition-colors ${
                           selected
-                            ? "border-[var(--accent)] bg-[color:color-mix(in_srgb,var(--accent)_15%,black)]"
+                            ? "border-[var(--accent)] bg-[color:color-mix(in_srgb,var(--accent)_16%,black)]"
                             : "border-[var(--line)] hover:border-zinc-500"
-                        } border p-3`}
+                        } border p-3 ${room.id % 2 === 0 ? "-rotate-[0.2deg]" : "rotate-[0.2deg]"}`}
                       >
                         <p className="text-xs uppercase tracking-[0.18em] text-[var(--accent)]">{room.description}</p>
                         <h3 className="mt-1 brand-display text-4xl leading-none">{room.name}</h3>
@@ -228,7 +228,7 @@ export default function BookingPage() {
                       setSelectedDate(event.target.value);
                       setSelectedTime(null);
                     }}
-                    className="w-full border border-[var(--line)] bg-black px-3 py-2"
+                    className="w-full border border-[var(--line)] bg-black px-3 py-2 outline-none focus:border-[var(--accent)]"
                   />
                 </label>
 
@@ -293,7 +293,7 @@ export default function BookingPage() {
                   <input
                     value={name}
                     onChange={(event) => setName(event.target.value)}
-                    className="w-full border border-[var(--line)] bg-black px-3 py-2"
+                    className="w-full border border-[var(--line)] bg-black px-3 py-2 outline-none focus:border-[var(--accent)]"
                     placeholder="Ej: Juan Perez"
                   />
                 </label>
@@ -302,7 +302,7 @@ export default function BookingPage() {
                   <input
                     value={phone}
                     onChange={(event) => setPhone(event.target.value)}
-                    className="w-full border border-[var(--line)] bg-black px-3 py-2"
+                    className="w-full border border-[var(--line)] bg-black px-3 py-2 outline-none focus:border-[var(--accent)]"
                     placeholder="Ej: 11 1234 5678"
                   />
                 </label>
@@ -329,7 +329,7 @@ export default function BookingPage() {
           )}
         </section>
 
-        <aside className="panel h-fit p-5 sm:p-6">
+        <aside className="panel h-fit p-5 sm:p-6 lg:sticky lg:top-24">
           <p className="text-xs uppercase tracking-[0.18em] text-[var(--accent)]">Resumen</p>
 
           {!reservationSummary ? (

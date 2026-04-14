@@ -181,7 +181,7 @@ export default function AdminDashboardPage() {
                       <button
                         type="button"
                         onClick={() => onDelete(reservation.id)}
-                        className="w-full border border-red-500/60 bg-red-950/30 p-2 text-left text-xs"
+                        className="w-full border border-red-500/60 bg-red-950/30 p-2 text-left text-xs transition hover:border-red-400"
                       >
                         <p className="font-semibold">{reservation.contact}</p>
                         <p className="mt-1 uppercase tracking-[0.1em] text-red-300">Eliminar</p>
@@ -202,7 +202,10 @@ export default function AdminDashboardPage() {
           <p className="mb-3 text-sm text-muted">Reservas del mes: {reservations.length}</p>
           <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {reservations.map((entry) => (
-              <article key={entry.id} className="border border-[var(--line)] p-3 text-sm">
+              <article
+                key={entry.id}
+                className="border border-[var(--line)] bg-[#111116] p-3 text-sm"
+              >
                 <p className="text-xs uppercase tracking-[0.12em] text-[var(--accent)]">{entry.room.name}</p>
                 <p className="mt-1">{entry.date}</p>
                 <p>{entry.time}</p>

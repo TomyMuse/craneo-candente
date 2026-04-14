@@ -51,7 +51,7 @@ export default function AdminLoginPage() {
             <input
               value={username}
               onChange={(event) => setUsername(event.target.value)}
-              className="w-full border border-[var(--line)] bg-black px-3 py-2"
+              className="w-full border border-[var(--line)] bg-black px-3 py-2 outline-none focus:border-[var(--accent)]"
               autoComplete="username"
             />
           </label>
@@ -61,7 +61,7 @@ export default function AdminLoginPage() {
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              className="w-full border border-[var(--line)] bg-black px-3 py-2"
+              className="w-full border border-[var(--line)] bg-black px-3 py-2 outline-none focus:border-[var(--accent)]"
               autoComplete="current-password"
             />
           </label>
